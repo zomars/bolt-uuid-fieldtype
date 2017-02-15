@@ -1,0 +1,82 @@
+{#=== OPTIONS ========================================================================================================#}
+
+{% set option = {
+    viewless: context.content.contenttype.viewless|default(false)
+} %}
+
+{#=== INIT ===========================================================================================================#}
+
+{% set is_empty = context.content.get(contentkey) == '' %}
+
+{% if is_empty %}
+    {% set mode = 'editable' %}
+{% else %}
+    {% set mode = 'locked' %}
+{% endif %}
+
+
+{% set attributes = {
+    slug: {
+        class:     'form-control',
+        id:        key,
+        name:      name,
+        readonly:  mode != 'editable',
+        type:      'text',
+        value:     context.content.get(key),
+    }
+} %}
+
+{% set trans = {
+    menu_edit:       __('field.slug.button.edit'),
+    menu_generate:   __('field.slug.button.generate'),
+    menu_lock:       __('field.slug.button.lock'),
+    warning:         __('field.slug.message.warning'),
+} %}
+
+{#=== FIELDSET =======================================================================================================#}
+
+{% extends '@bolt/_base/_fieldset.twig' %}
+
+{% set fieldset_conf = {
+    contentId: context.content.id,
+    key:       key,
+    slug:      context.content.contenttype.slug,
+}%}
+
+{% block fieldset_type 'slug' %}
+{% block fieldset_widget 'fieldSlug' %}
+
+{% block fieldset_label_text 'UUID' %}
+{% block fieldset_label_class 'col-sm-12' %}
+
+{% block fieldset_controls %}
+    <div class="col-sm-12">
+        <div class="input-group {{ mode }}">
+            <span class="input-group-addon"></span>
+
+            <input{{ macro.attr(attributes.slug) }}>
+
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="lock{{ mode == 'locked' ? ' disabled' : '' }}">
+                        <a href="#"><i class="fa fa-fw fa-lock"></i> {{ trans.menu_lock }}</a>
+                    </li>
+                    <li class="edit{{ mode == 'editable' ? ' disabled' : '' }}">
+                        <a href="#"><i class="fa fa-fw fa-pencil"></i> {{ trans.menu_edit }}</a>
+                    </li>
+                    <li class="refresh">
+                        <a href="#"><i class="fa fa-fw fa-refresh"></i> Refresh UUID</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if not is_empty %}
+        <div class="col-sm-12 warning hidden">
+            <i class="fa fa-exclamation-triangle"></i> {{ trans.warning }}
+        </div>
+    {% endif %}
+{% endblock fieldset_controls %}

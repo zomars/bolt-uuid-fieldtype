@@ -1,0 +1,38 @@
+{
+    "name": "zomars/uuid-fieldtype",
+    "description": "Adds an auto-generated UUID fieldtype.",
+    "type": "bolt-extension",
+    "keywords": [
+        "backend",
+        "field",
+        "uuid"
+    ],
+    "require": {
+        "bolt/bolt": "^3.0",
+        "ramsey/uuid": "^3.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zomars",
+            "email": "zomars@me.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Bolt\\Extension\\Zomars\\UuidFieldType\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bolt\\Extension\\Zomars\\UuidFieldType\\Tests\\": "tests",
+            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
+        }
+    },
+    "extra": {
+        "bolt-assets": "web",
+        "bolt-class": "Bolt\\Extension\\Zomars\\UuidFieldType\\UuidFieldTypeExtension"
+    }
+}
