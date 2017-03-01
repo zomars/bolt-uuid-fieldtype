@@ -5,6 +5,7 @@ namespace Bolt\Extension\Zomars\UuidFieldType\Field;
 use Bolt\Storage\EntityManager;
 use Bolt\Storage\Field\Type\FieldTypeBase;
 use Bolt\Storage\QuerySet;
+use Ramsey\Uuid\Uuid;
 
 class UuidField extends FieldTypeBase
 {
@@ -14,6 +15,10 @@ class UuidField extends FieldTypeBase
         $key = $this->mapping['fieldname'];
         $qb = $queries->getPrimary();
         $value = $entity->get($key);
+
+        if (!$value) {
+            $value = sha1(Uuid::uuid4()->toString());
+        }
 
         $qb->setValue($key, ':' . $key);
         $qb->set($key, ':' . $key);
